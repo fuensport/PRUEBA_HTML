@@ -4,5 +4,6 @@
     <string name="app_name">Ejemplo_html</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+	<string name="html_vista">AQUI VA EL HTML</string>
+	<string name="boton_probar">PROBAR!</string>
 </resources>
