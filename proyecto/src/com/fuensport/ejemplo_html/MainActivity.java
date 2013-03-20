@@ -15,13 +15,12 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements OnClickListener{
 
 	private static final String DEBUG_TAG = "HttpExample";
 	private EditText urlText;
@@ -31,33 +30,25 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//urlText = (EditText) findViewById(R.id.);
-		//textView = (TextView) findViewById(R.id.);
+
+		textView = (TextView) findViewById(R.id.textView1);
+		View botonPrueba = findViewById(R.id.button1);
+		botonPrueba.setOnClickListener((android.view.View.OnClickListener) this);
 	}
 
 	// When user clicks button, calls AsyncTask.
 	// Before attempting to fetch the URL, makes sure that there is a network
 	// connection.
-	public void myClickHandler(View view) {
-
-		// Checking URL connection
+	@Override
+	public void onClick(View view) {
+		// Gets the URL from the UI's text field.
+		String stringUrl = "http://www.google.com";
 		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 		if (networkInfo != null && networkInfo.isConnected()) {
-
-			// Gets the URL from the UI's text field.
-			String stringUrl = urlText.getText().toString();
-			connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			networkInfo = connMgr.getActiveNetworkInfo();
-			if (networkInfo != null && networkInfo.isConnected()) {
-				new DownloadWebpageText().execute(stringUrl);
-			} else {
-				textView.setText("No network connection available.");
-			}
-
+			new DownloadWebpageText().execute(stringUrl);
 		} else {
-			// display error
+			textView.setText("No network connection available.");
 		}
 	}
 
@@ -119,14 +110,15 @@ public class MainActivity extends Activity {
 				}
 			}
 		}
-		
+
 		// Reads an InputStream and converts it to a String.
-		public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-		    Reader reader = null;
-		    reader = new InputStreamReader(stream, "UTF-8");        
-		    char[] buffer = new char[len];
-		    reader.read(buffer);
-		    return new String(buffer);
+		public String readIt(InputStream stream, int len) throws IOException,
+				UnsupportedEncodingException {
+			Reader reader = null;
+			reader = new InputStreamReader(stream, "UTF-8");
+			char[] buffer = new char[len];
+			reader.read(buffer);
+			return new String(buffer);
 		}
 	}
 
